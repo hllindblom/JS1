@@ -28,6 +28,8 @@ window.onload = function () {
 
 
     //testikommentti @author Tom
+    //eka kommentti
+
     document.getElementById("nappi").onclick = function(){
         req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/HKI/SK', true);
         req.send(null);
