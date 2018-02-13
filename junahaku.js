@@ -1,33 +1,55 @@
 window.onload = function () {
 
-    console.log(localStorage.kayttajat);
+
+    var asematUrl = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
+    var asemat;
+    var lahtoasema;
+    var paateasema;
+
+    //haetaan asema-data
+    $.getJSON(asematUrl, function (jsondata) {
+        asemat = jsondata;
+        luoDropdownMenut(asemat);
+    });
 
     req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
         if(req.readyState === 4){
             if(req.status === 200){
+                console.dir(asemat);
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
+
+                $('<p></p>', {
+                    text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
+                }).appendTo('#lista');
+
                 for(var i = 0; i < data.length; i++){
                     var juna = data[i];
-                    var lahtoaika = new Date(juna.timeTableRows[0].scheduledTime);
-                    var saapumisaika = new Date(juna.timeTableRows[juna.timeTableRows.length-1].scheduledTime);
-                    var lahtopaikka = juna.timeTableRows[0].stationShortCode;
-                    var saapumispaikka = juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode;
+                    var lahtoasemanIndeksi = palautaJunanTiedot(lahtoasema, juna.timeTableRows);
+                    var paateasemanIndeksi = palautaJunanTiedot(paateasema, juna.timeTableRows);
+                    var lahtoaika = new Date(juna.timeTableRows[lahtoasemanIndeksi].scheduledTime);
+                    var saapumisaika = new Date(juna.timeTableRows[paateasemanIndeksi].scheduledTime);
+                    // var lahtopaikka = palautaAsemanTiedot(juna.timeTableRows[0].stationShortCode).stationName;
+                    // var saapumispaikka = palautaAsemanTiedot(juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode).stationName;
+
                     var optiot = {hour: '2-digit', minute: '2-digit', hour12: false};
+                    //listataan junat
                     $('<p></p>', {
-                        text: juna.trainCategory +
-                        ": " + juna.trainType + juna.trainNumber + ", lähtee (" + lahtopaikka + "): "
-                        + lahtoaika.toLocaleDateString("fi", optiot) + " saapuu (" + saapumispaikka + "): "
+                        text: juna.trainType + juna.trainNumber + ", lähtee: "
+                        + lahtoaika.toLocaleDateString("fi", optiot) + " saapuu (" + palautaAsemanTiedot(paateasema).stationName + "): "
                         + saapumisaika.toLocaleDateString("fi", optiot),
                         id: juna.trainNumber,
-                        class: 'juna'
                     }).appendTo('#lista');
-                    for(var j = 1; j < juna.timeTableRows.length; j += 2){
+
+                    //listataan junan tarkemmat tiedot
+                    for(var j = lahtoasemanIndeksi+2; j <= paateasemanIndeksi; j += 2){
                         var aika = new Date(juna.timeTableRows[j].scheduledTime);
+                        var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
+
                         $('<p></p>', {
-                            text: juna.timeTableRows[j].stationShortCode + ", " + aika.toLocaleDateString("fi", optiot),
+                            text: asemanNimi + ", " + aika.toLocaleDateString("fi", optiot),
                         }).appendTo('#'+juna.trainNumber).hide();
                     }
                     $("#"+juna.trainNumber).on('click', function () {
@@ -39,41 +61,60 @@ window.onload = function () {
             }
         }
     };
+
+    //funktio joka palauttaa aseman koko nimen shortCoden perusteella
+    function palautaAsemanTiedot(syote) {
+        var a = $.grep(asemat, function (e) {
+            return (e.stationShortCode === syote);
+        });
+        return a[0];
+    }
+
+    //funktio joka palauttaa haetun aseman indeksin junan tiedoista
+    function palautaJunanTiedot(asemakoodi, data) {
+        return data.findIndex(x => x.stationShortCode === asemakoodi);
+    }
+
+
     // luodaan valittujen asemien väliset yhteydet listaksi
     document.getElementById("nappi").onclick = function(){
         var ulos = document.getElementById("lista");
         ulos.innerHTML ='';
-        var lahtoasema = document.getElementById("lahto").value;
-        var paateasema = document.getElementById("paate").value;
-        console.dir(lahtoasema);
-        console.dir(paateasema);
+        lahtoasema = document.getElementById("lahto").value;
+        paateasema = document.getElementById("paate").value;
         req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
         req.send(null);
     }
-    // luodaan lähtöasemien dynaaminen lista JSON:in avulla
-    let dropdownlahto = $('#lahto');
-    dropdownlahto.empty();
-    dropdownlahto.append('<option selected="true" disabled>Valitse lähtöasema:</option>');
-    dropdownlahto.prop('selectedIndex', 0);
-    const url = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
-    // Populate dropdown with list of provinces
-    $.getJSON(url, function (data) {
-        $.each(data, function (key, entry) {
-            dropdownlahto.append($('<option></option>').attr('value', entry.stationShortCode).text(entry.stationName));
-        })
-    });
-    // luodaan pääteasemien dynaaminen lista JSON:in avulla
-    let dropdownpaate = $('#paate');
-    dropdownpaate.empty();
-    dropdownpaate.append('<option selected="true" disabled>Valitse päätasema:</option>');
-    dropdownpaate.prop('selectedIndex', 0);
-    const url2 = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
-    // Populate dropdown with list of provinces
-    $.getJSON(url2, function (data) {
-        $.each(data, function (key, entry) {
-            dropdownpaate.append($('<option></option>').attr('value', entry.stationShortCode).text(entry.stationName));
-        })
-    });
+
+    //funktio, joka luo dropdownmenut asema-json-datan perusteella
+    function luoDropdownMenut(data){
+        // luodaan lähtöasemien dynaaminen lista JSON:in avulla
+        let dropdownlahto = $('#lahto');
+        dropdownlahto.empty();
+        dropdownlahto.append('<option selected="true" disabled>Valitse lähtöasema:</option>');
+        dropdownlahto.prop('selectedIndex', 0);
+        luoLahtoasemat(asemat);
+
+// Populate dropdown with list of provinces
+        function luoLahtoasemat(data) {
+            $.each(data, function (key, entry) {
+                dropdownlahto.append($('<option></option>').attr('value', entry.stationShortCode).text(entry.stationName));
+            })
+        };
+        // luodaan pääteasemien dynaaminen lista JSON:in avulla
+        let dropdownpaate = $('#paate');
+        dropdownpaate.empty();
+        dropdownpaate.append('<option selected="true" disabled>Valitse pääteasema:</option>');
+        dropdownpaate.prop('selectedIndex', 0);
+        luoPaateasemat(asemat);
+
+        // Populate dropdown with list of provinces
+        function luoPaateasemat(data) {
+            $.each(data, function (key, entry) {
+                dropdownpaate.append($('<option></option>').attr('value', entry.stationShortCode).text(entry.stationName));
+            })
+        };
+    };
     // ei voi valita kahta samaa asemaa
     $(document).ready(function() {
         $(".preferenceSelect").change(function() {
