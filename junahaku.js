@@ -1,5 +1,7 @@
 window.onload = function () {
 
+    console.log(localStorage.kayttajat);
+
     req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
@@ -13,7 +15,6 @@ window.onload = function () {
                     var saapumisaika = new Date(juna.timeTableRows[juna.timeTableRows.length-1].scheduledTime);
                     var lahtopaikka = juna.timeTableRows[0].stationShortCode;
                     var saapumispaikka = juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode;
-
                     var optiot = {hour: '2-digit', minute: '2-digit', hour12: false};
                     $('<p></p>', {
                         text: juna.trainCategory +
@@ -55,7 +56,7 @@ window.onload = function () {
     dropdownlahto.append('<option selected="true" disabled>Valitse lähtöasema:</option>');
     dropdownlahto.prop('selectedIndex', 0);
     const url = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
-// Populate dropdown with list of provinces
+    // Populate dropdown with list of provinces
     $.getJSON(url, function (data) {
         $.each(data, function (key, entry) {
             dropdownlahto.append($('<option></option>').attr('value', entry.stationShortCode).text(entry.stationName));

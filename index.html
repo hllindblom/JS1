@@ -5,6 +5,12 @@
     <title>Junia</title>
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="junahaku.js"></script>
+    <script>
+        // Tässä testataan, että käyttäjätunnus tuli linkin perään
+        function ajaminen(){
+            console.log(window.location.href);
+        }
+    </script>
 </head>
 <body>
 <h1>Junahaku:</h1>
@@ -18,6 +24,7 @@
         <br>
 
         <input type="submit" value="Hae" id="nappi">
+        <input type="submit" value="Aja" id="testaa" onclick="ajaminen()">
 
 <div id="lista"></div>
 </body>
