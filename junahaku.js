@@ -8,7 +8,7 @@ window.onload = function () {
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
                 var ulos = document.getElementById("lista");
-                ulos.innerHTML = '';
+                ulos.innerHTML ='';
                 for(var i = 0; i < data.length; i++){
                     var juna = data[i];
                     var lahtoaika = new Date(juna.timeTableRows[0].scheduledTime);
@@ -17,10 +17,23 @@ window.onload = function () {
                     var saapumispaikka = juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode;
 
                     var optiot = {hour: '2-digit', minute: '2-digit', hour12: false};
-                    ulos.innerHTML += "<li>" + juna.trainCategory +
+                    $('<p></p>', {
+                        text: juna.trainCategory +
                         ": " + juna.trainType + juna.trainNumber + ", lähtee (" + lahtopaikka + "): "
                         + lahtoaika.toLocaleDateString("fi", optiot) + " saapuu (" + saapumispaikka + "): "
-                        + saapumisaika.toLocaleDateString("fi", optiot);
+                        + saapumisaika.toLocaleDateString("fi", optiot),
+                        id: juna.trainNumber,
+                        class: 'juna'
+                    }).appendTo('#lista');
+                    for(var j = 1; j < juna.timeTableRows.length; j += 2){
+                        var aika = new Date(juna.timeTableRows[j].scheduledTime);
+                        $('<p></p>', {
+                            text: juna.timeTableRows[j].stationShortCode + ", " + aika.toLocaleDateString("fi", optiot),
+                        }).appendTo('#'+juna.trainNumber).hide();
+                    }
+                    $("#"+juna.trainNumber).on('click', function () {
+                        $(this).children().slideToggle();
+                    });
                 }
             } else {
                 alert("Pyyntö epäonnistui");
