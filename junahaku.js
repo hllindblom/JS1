@@ -7,8 +7,6 @@ window.onload = function () {
             if(req.status === 200){
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
-                var ulos = document.getElementById("lista");
-                ulos.innerHTML ='';
                 for(var i = 0; i < data.length; i++){
                     var juna = data[i];
                     var lahtoaika = new Date(juna.timeTableRows[0].scheduledTime);
@@ -42,6 +40,8 @@ window.onload = function () {
     };
     // luodaan valittujen asemien väliset yhteydet listaksi
     document.getElementById("nappi").onclick = function(){
+        var ulos = document.getElementById("lista");
+        ulos.innerHTML ='';
         var lahtoasema = document.getElementById("lahto").value;
         var paateasema = document.getElementById("paate").value;
         console.dir(lahtoasema);
