@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <title>Junia</title>
     <script type="text/javascript" src="junahaku.js"></script>
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 <h1>Junahaku:</h1>
-<input type="button" value="Hae" id="nappi" />
-<ol id="lista"></ol>
+
+        Lähtöasema:<br>
+        <select name="lahtoasema" id="lahto" class="preferenceSelect"></select>
+        <br>
+
+        Pääteasema:<br>
+        <select name="paateasema" id="paate" class="preferenceSelect"></select>
+        <br>
+
+        <input type="submit" value="Hae" id="nappi">
+
+<ul id="lista"></ul>
 </body>
 </html>
