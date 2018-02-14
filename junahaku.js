@@ -1,14 +1,27 @@
+// sijoittaa suosikin hakuehtoihin, mutta ei toteuta hakua. Pitää painaa "Hae" erikseen.
+function avaaSuosikki(){
+    var splitattava = document.getElementById("suosikki").innerText;
+    var splitattu = splitattava.split(" ");
+    console.dir(splitattu);
+    var lahtoAsemaSuosikki = splitattu[0];
+    var paateAsemaSuosikki = splitattu[2];
+    console.log(lahtoAsemaSuosikki);
+    console.log(paateAsemaSuosikki);
+    $('#lahto').val(lahtoAsemaSuosikki);
+    $('#paate').val(paateAsemaSuosikki);
+}
+
 // kirjaa ulos käyttäjän, eli avaa uuden sivun ilman käyttäjätietoja html:ssä ja urlissa
 function kirjauduUlos() {
     window.alert("Olet nyt kirjautunut ulos. Tervetuloa uudestaan!");
-    open(url="index.html");
+    open(url="index.html","_self");
 }
 //tähän rakennetaan toiminnallisuus, joka lisää käyttäjän suosikin muistiin
 function lisaaSuosikki(){
     window.alert("Tallensit reitin");
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
-    document.getElementById("kayttajanNimi").innerHTML += "<h2>" + lahtoasema + " - " + paateasema;
+    document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
 }
 
 window.onload = function () {
@@ -102,7 +115,8 @@ window.onload = function () {
 
 
     // luodaan valittujen asemien väliset yhteydet listaksi
-    document.getElementById("nappi").onclick = function(){
+    document.getElementById("nappi").onclick = hae;
+        function hae(){
         var ulos = document.getElementById("lista");
         ulos.innerHTML ='';
         lahtoasema = document.getElementById("lahto").value;
@@ -113,7 +127,7 @@ window.onload = function () {
         if ((window.location.href.indexOf("#") !== -1)){
             document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
         }
-    }
+    };
 
     //funktio, joka luo dropdownmenut asema-json-datan perusteella
     function luoDropdownMenut(data){
