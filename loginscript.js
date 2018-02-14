@@ -1,3 +1,11 @@
+window.onload = function tallenna() {
+    var niki = {"id":"niki", "pw":"salasana"};
+    var kake = {"id":"kake", "pw":"salis"};
+    var jake = {"id":"jake", "pw":"palis"};
+    localStorage.kayttajat = JSON.stringify(niki);
+    localStorage.kayttajat += JSON.stringify(kake);
+    localStorage.kayttajat += JSON.stringify(jake);
+}
 
 // Tämä funktio luo uuden käyttäjätunnuksen, jos Luo tili-painiketta painetaan.
 // Lisätään uusi merkkijono LocalStorageen jo olemassaolevien jatkeeksi!

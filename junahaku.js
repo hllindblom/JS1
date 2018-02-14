@@ -68,6 +68,7 @@ window.onload = function () {
         luoDropdownMenut(matkustajaAsemat);
     });
 
+    estaSamaValintaDropdowneissa();
     //haetaan käyttäjän geolokaatio ja tallennetaan omaLat- ja omaLon-muuttujiin
     var omaLat;
     var omaLon;
@@ -196,16 +197,16 @@ window.onload = function () {
 
     // luodaan valittujen asemien väliset yhteydet listaksi
     document.getElementById("nappi").onclick = hae;
-        function hae(){
-        var ulos = document.getElementById("lista");
-        ulos.innerHTML ='';
+
+    function hae(){
+        document.getElementById("lista").innerHTML ='';
         lahtoasema = document.getElementById("lahto").value;
         paateasema = document.getElementById("paate").value;
         req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
         req.send(null);
         // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
         if ((window.location.href.indexOf("#") !== -1)){
-            document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
+            document.getElementById("lisaaSuosikkeihin").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
         }
     };
 
@@ -239,7 +240,7 @@ window.onload = function () {
         };
     };
     // ei voi valita kahta samaa asemaa, pitää tehdä erillinen funktio tästä ja siirtää myös kutsu hakufunktion ekaksi riviksi
-    $(document).ready(function() {
+    function estaSamaValintaDropdowneissa () {
         $(".preferenceSelect").change(function() {
             // Get the selected value
             var selected = $("option:selected", $(this)).val();
@@ -255,5 +256,5 @@ window.onload = function () {
                 }
             });
         });
-    });
+    };
 };
