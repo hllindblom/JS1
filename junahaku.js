@@ -211,7 +211,6 @@ window.onload = function () {
         return data.findIndex(x => x.stationShortCode === asemakoodi);
     }
 
-
     // luodaan valittujen asemien väliset yhteydet listaksi
     document.getElementById("nappi").onclick = hae;
 
