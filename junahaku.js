@@ -9,7 +9,7 @@ function hae(){
     document.getElementById("lista").innerHTML ='';
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
-    req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
+    req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema + '?limit=15', true);
     req.send(null);
     // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
     if ((window.location.href.indexOf("#") !== -1)){
