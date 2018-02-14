@@ -1,13 +1,3 @@
-// Kun sivu avataan, latautuu testikäyttäjät localStorageen nimeltä kayttajat.
-// Jatkossa tässä lisätään myös uudet käyttäjät, kun softa julkaistaan
-// window.onload = function tallenna() {
-//      var niki = {"id":"niki", "pw":"salasana"};
-//      var kake = {"id":"kake", "pw":"salis"};
-//      var jake = {"id":"jake", "pw":"palis"};
-//      localStorage.kayttajat = JSON.stringify(niki);
-//  };
-// YLLÄOLEVA NYT YLIMÄÄRÄISTÄ!
-
 
 // Tämä funktio luo uuden käyttäjätunnuksen, jos Luo tili-painiketta painetaan.
 // Lisätään uusi merkkijono LocalStorageen jo olemassaolevien jatkeeksi!

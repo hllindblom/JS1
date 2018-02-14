@@ -1,5 +1,25 @@
+// kirjaa ulos käyttäjän, eli avaa uuden sivun ilman käyttäjätietoja html:ssä ja urlissa
+function kirjauduUlos() {
+    window.alert("Olet nyt kirjautunut ulos. Tervetuloa uudestaan!");
+    open(url="index.html");
+}
+//tähän rakennetaan toiminnallisuus, joka lisää käyttäjän suosikin muistiin
+function lisaaSuosikki(){
+    window.alert("Tallensit reitin");
+    lahtoasema = document.getElementById("lahto").value;
+    paateasema = document.getElementById("paate").value;
+    document.getElementById("kayttajanNimi").innerHTML += "<h2>" + lahtoasema + " - " + paateasema;
+}
+
 window.onload = function () {
 
+    //printtaa kirjautuneen nimimerkin sivulle ja luo kirjaudu ulos napin
+    if (window.location.href.indexOf("#") !== -1){
+        var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length)
+        console.log(kayttajanNimi);
+        document.getElementById("kayttajanNimi").innerHTML = "<h1>" + "Kirjautuneena: " + kayttajanNimi + "<br>";
+        document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
+    }
 
     var asematUrl = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
     var asemat;
@@ -84,6 +104,10 @@ window.onload = function () {
         paateasema = document.getElementById("paate").value;
         req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
         req.send(null);
+        // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
+        if ((window.location.href.indexOf("#") !== -1)){
+            document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
+        }
     }
 
     //funktio, joka luo dropdownmenut asema-json-datan perusteella
@@ -115,7 +139,7 @@ window.onload = function () {
             })
         };
     };
-    // ei voi valita kahta samaa asemaa
+    // ei voi valita kahta samaa asemaa, pitää tehdä erillinen funktio tästä ja siirtää myös kutsu hakufunktion ekaksi riviksi
     $(document).ready(function() {
         $(".preferenceSelect").change(function() {
             // Get the selected value
