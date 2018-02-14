@@ -1,3 +1,22 @@
+req = new XMLHttpRequest();
+var asematUrl = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
+var asemat;
+
+var lahtoasema;
+var paateasema;
+
+function hae(){
+    document.getElementById("lista").innerHTML ='';
+    lahtoasema = document.getElementById("lahto").value;
+    paateasema = document.getElementById("paate").value;
+    req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
+    req.send(null);
+    // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
+    if ((window.location.href.indexOf("#") !== -1)){
+        document.getElementById("lisaaSuosikkeihin").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
+    }
+}
+
 // sijoittaa suosikin hakuehtoihin, mutta ei toteuta hakua. Pitää painaa "Hae" erikseen.
 function avaaSuosikki(){
     var splitattava = document.getElementById("suosikki").innerText;
@@ -9,6 +28,7 @@ function avaaSuosikki(){
     console.log(paateAsemaSuosikki);
     $('#lahto').val(lahtoAsemaSuosikki);
     $('#paate').val(paateAsemaSuosikki);
+    hae();
 }
 
 // kirjaa ulos käyttäjän, eli avaa uuden sivun ilman käyttäjätietoja html:ssä ja urlissa
@@ -54,10 +74,7 @@ window.onload = function () {
         document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
     }
 
-    var asematUrl = 'https://rata.digitraffic.fi/api/v1/metadata/stations';
-    var asemat;
-    var lahtoasema;
-    var paateasema;
+
 
     //haetaan asema-data, suodatetaan pois ne asemat, jotka eivät ole matkustaja-asemia
     $.getJSON(asematUrl, function (jsondata) {
@@ -126,7 +143,7 @@ window.onload = function () {
         $('#lahto').val(lahinAsema.stationShortCode);
     }
 
-    req = new XMLHttpRequest();
+
 
     req.onreadystatechange = function () {
         if(req.readyState === 4){
@@ -198,17 +215,7 @@ window.onload = function () {
     // luodaan valittujen asemien väliset yhteydet listaksi
     document.getElementById("nappi").onclick = hae;
 
-    function hae(){
-        document.getElementById("lista").innerHTML ='';
-        lahtoasema = document.getElementById("lahto").value;
-        paateasema = document.getElementById("paate").value;
-        req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema, true);
-        req.send(null);
-        // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
-        if ((window.location.href.indexOf("#") !== -1)){
-            document.getElementById("lisaaSuosikkeihin").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
-        }
-    };
+
 
     //funktio, joka luo dropdownmenut asema-json-datan perusteella
     function luoDropdownMenut(data){
