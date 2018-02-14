@@ -42,6 +42,8 @@ function lisaaSuosikki(){
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
     document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
+    var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
+    localStorage.setItem(kayttajanNimi,lahtoasema + " - " + paateasema);
 }
 
 //Laskee etäisyyden kahden pisteen väliltä. Parametreina kahden pisteen
@@ -68,16 +70,17 @@ window.onload = function () {
 
     //printtaa kirjautuneen nimimerkin sivulle, luo kirjaudu ulos napin ja luo uuden localstoragen käyttäjälle, jos ei jo olemassa.
     if (window.location.href.indexOf("#") !== -1){
-        var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length)
+        var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
         console.log(kayttajanNimi);
         document.getElementById("kayttajanNimi").innerHTML = "<h1>" + "Kirjautuneena: " + kayttajanNimi + "<br>";
         document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
         if (localStorage.getItem(kayttajanNimi) === null){
             localStorage.setItem(kayttajanNimi, '');
+        } else {
+            console.log(localStorage.getItem(kayttajanNimi));
+            document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + localStorage.getItem(kayttajanNimi);
         }
     }
-
-
 
     //haetaan asema-data, suodatetaan pois ne asemat, jotka eivät ole matkustaja-asemia
     $.getJSON(asematUrl, function (jsondata) {

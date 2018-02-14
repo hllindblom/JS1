@@ -1,12 +1,14 @@
 // Tämä funktio luo uuden käyttäjätunnuksen, jos Luo tili-painiketta painetaan.
 // Lisätään uusi merkkijono LocalStorageen jo olemassaolevien jatkeeksi!
-// EI VALITA PUUTTUVASTA KÄYTTÄJÄTUNNUKSESTA, JOS SYÖTTÄÄ VAIN SALASANAN! VALITTAA VAIN ETTÄ KÄYTTÄJÄTUNNUS ON JO OLEMASSA!
+// ALERT-VIESTEISSÄ VIELÄ HIOMISEN VARAA!
     function luoJaLisaaUusiKayttaja(){
         var kayttajat = localStorage.kayttajat;
         var uusiNimi = document.getElementById("id").value;
         var uusiSalasana = document.getElementById("pw").value;
         if(kayttajat === undefined){
-            if (uusiNimi !== '' && uusiSalasana === '') {
+            if (uusiNimi === '' && uusiSalasana === ''){
+                window.alert("Syötä käyttäjätunnus ja salasana!")
+            } else if (uusiNimi !== '' && uusiSalasana === '') {
                 window.alert("Syötä myös salasana!")
             } else if (uusiNimi === '' && uusiSalasana !== ''){
                 window.alert("Syötä myös käyttäjätunnus!")
@@ -19,7 +21,9 @@
             }
         } else {
             if (kayttajat.indexOf(uusiNimi) === -1) {
-                if (uusiNimi !== '' && uusiSalasana === '') {
+                if (uusiNimi === '' && uusiSalasana === '') {
+                    window.alert("Syötä käyttäjätunnus ja salasana!")
+                } else if (uusiNimi !== '' && uusiSalasana === '') {
                     window.alert("Syötä myös salasana!")
                 } else if (uusiNimi === '' && uusiSalasana !== '') {
                     window.alert("Syötä myös käyttäjätunnus!")
