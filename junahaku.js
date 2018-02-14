@@ -24,6 +24,26 @@ function lisaaSuosikki(){
     document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
 }
 
+//Laskee etäisyyden kahden pisteen väliltä. Parametreina kahden pisteen
+//latitude ja langitude. Käyttää apufunktiona muutaRadiaaniksi-funktiota.
+//Palauttaa etäisyyden kilometreinä.
+function laskeEtaisyys(lat1, lon1, lat2, lon2) {
+    lat1 = muutaRadiaaniksi(lat1);
+    lat2 = muutaRadiaaniksi(lat2);
+    lon1 = muutaRadiaaniksi(lon1);
+    lon2 = muutaRadiaaniksi(lon2);
+    var R = 6371; // km
+    var x = (lon2 - lon1) * Math.cos((lat1 + lat2) / 2);
+    var y = (lat2 - lat1);
+    var d = Math.sqrt(x * x + y * y) * R;
+    return d;
+}
+
+//tämä funktio muuttaa asteet radiaaneiksi
+function muutaRadiaaniksi(deg) {
+    return deg * Math.PI / 180;
+}
+
 window.onload = function () {
 
     //printtaa kirjautuneen nimimerkin sivulle ja luo kirjaudu ulos napin
@@ -39,11 +59,71 @@ window.onload = function () {
     var lahtoasema;
     var paateasema;
 
-    //haetaan asema-data
+    //haetaan asema-data, suodatetaan pois ne asemat, jotka eivät ole matkustaja-asemia
     $.getJSON(asematUrl, function (jsondata) {
         asemat = jsondata;
-        luoDropdownMenut(asemat);
+        var matkustajaAsemat= $.grep(asemat,function (mat) {
+            return (mat.passengerTraffic===true);
+        })
+        luoDropdownMenut(matkustajaAsemat);
     });
+
+    //haetaan käyttäjän geolokaatio ja tallennetaan omaLat- ja omaLon-muuttujiin
+    var omaLat;
+    var omaLon;
+    navigator.geolocation.getCurrentPosition(
+        function (loc) {
+            omaLat = loc.coords.latitude;
+            omaLon = loc.coords.longitude;
+        } ,
+        function (errordata) {
+            console.log('Virhe: ' + errordata.message);
+        },
+        { enableHighAccuracy: true }
+    );
+
+    //käydään läpi kaikki asemat ja etsitään lähin asema
+    //esitellään muuttujat, etäisyyden alkuarvo = "ääretön"
+    var lahinAsema;
+    var etaisyys = Number.MAX_VALUE;
+
+    //funktio käynnistyy napin painalluksella
+    document.getElementById("haeAsema").onclick = function(){
+        //testitapauksia
+        //1: Kamppi
+        // omaLat = 60.166296;
+        // omaLon = 24.932770;
+        //2: Seinäjoen maaseutu
+        // omaLat = 62.553988;
+        // omaLon = 23.004272;
+        // //3: Lappi
+        // omaLat = 67.456916;
+        // omaLon = 27.656982;
+        // //4: Pitäjänmäki
+        // omaLat = 60.228396;
+        // omaLon = 24.847777;
+
+        //varmistetaan, millä tiedoilla haku tehdään
+        console.log('Oma leveyspiiri: ' + omaLat);
+        console.log('Oma pituuspiiri: ' + omaLon);
+
+        //käydään läpi asemat ja haetaan pienintä etäisyyttä (linnuntietä)
+        for(var i = 0; i < asemat.length; i++){
+            var asemanLat = asemat[i].latitude;
+            var asemanLon = asemat[i].longitude;
+            //otetaan hakuun mukaan vain matkustajaliikenteelle sallitut asemat
+            if(asemat[i].passengerTraffic && laskeEtaisyys(asemanLat, asemanLon, omaLat, omaLon) < etaisyys){
+                etaisyys = laskeEtaisyys(asemanLat, asemanLon, omaLat, omaLon);
+                lahinAsema = asemat[i];
+            }
+        }
+
+        console.log(etaisyys);
+        console.log(lahinAsema.stationName);
+
+        //sijoitetaan alasvetovalikkoon lähin asema
+        $('#lahto').val(lahinAsema.stationShortCode);
+    }
 
     req = new XMLHttpRequest();
 
@@ -136,7 +216,7 @@ window.onload = function () {
         dropdownlahto.empty();
         dropdownlahto.append('<option selected="true" disabled>Valitse lähtöasema:</option>');
         dropdownlahto.prop('selectedIndex', 0);
-        luoLahtoasemat(asemat);
+        luoLahtoasemat(data);
 
 // Populate dropdown with list of provinces
         function luoLahtoasemat(data) {
@@ -149,7 +229,7 @@ window.onload = function () {
         dropdownpaate.empty();
         dropdownpaate.append('<option selected="true" disabled>Valitse pääteasema:</option>');
         dropdownpaate.prop('selectedIndex', 0);
-        luoPaateasemat(asemat);
+        luoPaateasemat(data);
 
         // Populate dropdown with list of provinces
         function luoPaateasemat(data) {
