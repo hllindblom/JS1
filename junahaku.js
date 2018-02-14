@@ -66,12 +66,15 @@ function muutaRadiaaniksi(deg) {
 
 window.onload = function () {
 
-    //printtaa kirjautuneen nimimerkin sivulle ja luo kirjaudu ulos napin
+    //printtaa kirjautuneen nimimerkin sivulle, luo kirjaudu ulos napin ja luo uuden localstoragen käyttäjälle, jos ei jo olemassa.
     if (window.location.href.indexOf("#") !== -1){
         var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length)
         console.log(kayttajanNimi);
         document.getElementById("kayttajanNimi").innerHTML = "<h1>" + "Kirjautuneena: " + kayttajanNimi + "<br>";
         document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
+        if (localStorage.getItem(kayttajanNimi) === null){
+            localStorage.setItem(kayttajanNimi, '');
+        }
     }
 
 
