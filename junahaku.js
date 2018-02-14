@@ -51,26 +51,31 @@ window.onload = function () {
                     var paateasemanIndeksi = palautaJunanTiedot(paateasema, juna.timeTableRows);
                     var lahtoaika = new Date(juna.timeTableRows[lahtoasemanIndeksi].scheduledTime);
                     var saapumisaika = new Date(juna.timeTableRows[paateasemanIndeksi].scheduledTime);
+                    var junanNimi = (juna.trainCategory==="Commuter")? (juna.commuterLineID+"-juna") : (juna.trainType+juna.trainNumber);
                     // var lahtopaikka = palautaAsemanTiedot(juna.timeTableRows[0].stationShortCode).stationName;
                     // var saapumispaikka = palautaAsemanTiedot(juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode).stationName;
 
                     var optiot = {hour: '2-digit', minute: '2-digit', hour12: false};
                     //listataan junat
                     $('<p></p>', {
-                        text: juna.trainType + juna.trainNumber + ", lähtee: "
+                        text: junanNimi + ", lähtee: "
                         + lahtoaika.toLocaleDateString("fi", optiot) + " saapuu (" + palautaAsemanTiedot(paateasema).stationName + "): "
                         + saapumisaika.toLocaleDateString("fi", optiot),
                         id: juna.trainNumber,
                     }).appendTo('#lista');
 
-                    //listataan junan tarkemmat tiedot
-                    for(var j = lahtoasemanIndeksi+2; j <= paateasemanIndeksi; j += 2){
-                        var aika = new Date(juna.timeTableRows[j].scheduledTime);
-                        var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
 
-                        $('<p></p>', {
-                            text: asemanNimi + ", " + aika.toLocaleDateString("fi", optiot),
-                        }).appendTo('#'+juna.trainNumber).hide();
+                    //listataan junan tarkemmat tiedot
+                    for(var j = lahtoasemanIndeksi+1; j <= paateasemanIndeksi; j += 2){
+
+                        if (juna.timeTableRows[j].trainStopping) {
+                            var aika = new Date(juna.timeTableRows[j].scheduledTime);
+                            var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
+
+                            $('<p></p>', {
+                                text: asemanNimi + ", " + aika.toLocaleTimeString("fi", optiot) ,
+                            }).appendTo('#' + juna.trainNumber).hide();
+                        }
                     }
                     $("#"+juna.trainNumber).on('click', function () {
                         $(this).children().slideToggle();
