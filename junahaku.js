@@ -155,6 +155,11 @@ window.onload = function () {
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
 
+                //varoitetaan, jos yhteyksiä ei löydy
+                if(data.code === "TRAIN_NOT_FOUND"){
+                    window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
+                }
+
                 $('<p></p>', {
                     text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
                 }).appendTo('#lista');
