@@ -210,7 +210,7 @@ window.onload = function () {
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
 
-                //varoitetaan, jos yhteyksiä ei löydy
+                //varoitetaan, jos yhteyksiä ei löydy, ei turhaan tulosteta tyhjää lähtöasemaa
                 if(data.code === "TRAIN_NOT_FOUND"){
                     window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
 
