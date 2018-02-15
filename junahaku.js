@@ -213,11 +213,6 @@ window.onload = function () {
                 //varoitetaan, jos yhteyksiä ei löydy, ei turhaan tulosteta tyhjää lähtöasemaa
                 if(data.code === "TRAIN_NOT_FOUND"){
                     window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
-
-                } else {
-                    $('<p></p>', {
-                        text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
-                    }).appendTo('#lista');
                 }
 
                 //luodaan taulukko, johon junat lisätään
