@@ -205,20 +205,22 @@ window.onload = function () {
 
     req.onreadystatechange = function () {
         if(req.readyState === 4){
-            if(req.status === 200){
+            if (req.status === 200){
                 console.dir(asemat);
                 var data = JSON.parse(req.responseText);
                 console.dir(data);
 
-                //varoitetaan, jos yhteyksiä ei löydy
+                //varoitetaan, jos yhteyksiä ei löydy, ei turhaan tulosteta tyhjää lähtöasemaa
                 if(data.code === "TRAIN_NOT_FOUND"){
                     window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
+
+                } else {
+                    $('<p></p>', {
+                        text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
+                    }).appendTo('#lista');
                 }
 
 
-                $('<p></p>', {
-                    text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
-                }).appendTo('#lista');
 
                 for(var i = 0; i < data.length; i++){
                     var juna = data[i];
