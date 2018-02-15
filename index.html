@@ -25,30 +25,30 @@
             <div class="form-group form-group-sm">
 
                 <input class="form-control" type="text" placeholder="Käyttäjätunnus" name="uname" id="id"
-                       style="margin-bottom:5px;" required>
+                       style="margin-bottom:5px; border: 1px solid black;" required>
                 <input class="form-control" type="password" placeholder="Salasana" name="psw" id="pw"
-                       style="margin-bottom:5px;" required>
+                       style="margin-bottom:5px; border: 1px solid black;" required>
                 <button class="btn btn-xs" onclick="kirjautuuSisaanJosTunnuksetOikein()">Kirjaudu</button>
                 <button class="btn btn-xs" onclick="luoJaLisaaUusiKayttaja()">Luo tili</button>
             </div>
 
         </div>
-        <div id="kirjauduUlosPiilotettava" style="margin-bottom:5px"></div>
+        <div id="kirjauduUlosPiilotettava" style="margin-bottom:5px;"></div>
     </div>
     <div class="row">
         <div class="keskitetty col-sm-4">
             <h1>JUNAVERSUM!</h1>
             <div class="form-group">
                 <select name="lahtoasema" id="lahto" class="preferenceSelect form-control"
-                        style="margin-bottom:5px;"></select>
+                        style="margin-bottom:5px; border: 1px solid black;"></select>
 
                 <select name="paateasema" id="paate" class="preferenceSelect form-control"
-                        style="margin-bottom:5px;"></select>
+                        style="margin-bottom:5px; border: 1px solid black;"></select>
 
-                <input type="datetime-local" id="pvm" class="form-control">
+                <input type="datetime-local" id="pvm" class="form-control" style="border: 1px solid black;">
             </div>
 
-            <button id="nappi" class="btn btn-block">Hae</button>
+            <button id="nappi" class="btn btn-block"><span class="glyphicon glyphicon-search"></span> Hae</button>
             <br>
             <button id="haeAsema" class="btn btn-block">Etsi lähin asema</button>
             <br>

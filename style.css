@@ -4,7 +4,6 @@
     bottom: 65px; /* Place the button at the bottom of the page */
     right: 100px; /* Place the button 30px from the right */
     z-index: 99; /* Make sure it does not overlap */
-    border: none; /* Remove borders */
     outline: none; /* Remove outline */
     background-color: #2d2d2d; /* Set a background color */
     color: white; /* Text color */
@@ -13,6 +12,7 @@
     border-radius: 10px; /* Rounded corners */
     font-size: 18px; /* Increase font size */
     font-family: Gill Sans , sans-serif;
+    border: 1px solid black;
 }
 
 .marginaalit {
