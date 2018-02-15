@@ -21,7 +21,8 @@ function hae(){
     req.send(null);
     // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
     if ((window.location.href.indexOf("#") !== -1)){
-        document.getElementById("lisaaSuosikkeihin").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" onclick=\"lisaaSuosikki()\">";
+        document.getElementById("faviNappi").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" id=\"favnappi\" onclick=\"lisaaSuosikki()\">";
+        $('#favnappi').hide().delay(3000).fadeIn(2200);
     }
 }
 

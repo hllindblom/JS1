@@ -43,13 +43,15 @@
 // Tämä lukee käyttäjän syöttämät tunnukset ja vertaa niitä "kayttajat" tallenteeseen.
 // Jos löytyy vastaavuus, suoritetaan kirjautuminen ja siirry funktion kutsu.
 // Muuten pyydetään tunnuksia uudestaan
-    function kirjautuuSisaanJosTunnuksetOikein(){
+    function kirjautuuSisaanJosTunnuksetOikein() {
         var kayttajat = localStorage.kayttajat;
         var kirjautuja = "{\"id\":\"" + document.getElementById("id").value + "\",\"pw\":\"" + document.getElementById("pw").value + "\"}";
         console.log(kayttajat);
         console.log(kirjautuja);
 
-        if (kayttajat.indexOf(kirjautuja) === -1){
+        if (kayttajat === undefined){
+           window.alert("Järjestelmässä ei ole vielä yhtäkään käyttäjää, luo ensimmäinen!")
+        } else if (kayttajat.indexOf(kirjautuja) === -1){
             window.alert("Väärä käyttäjätunnus tai salasana!")
             document.getElementById("id").value = '';
             document.getElementById("pw").value = '';
