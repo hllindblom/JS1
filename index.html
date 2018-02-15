@@ -1,75 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>Junia</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-    <link type="text/css" rel="stylesheet" href="clock_assets/flipclock.css" />
+    <link type="text/css" rel="stylesheet" href="clock_assets/flipclock.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="junahaku.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
+
 <body style="background-image: url(bakkari1.jpg); background-attachment: fixed; background-repeat: no-repeat; background-position: center">
 <div class="container-fluid marginaalit">
 
-        <div style="float: right; margin-top: 65px">
-            <div id="piilotettava">
+    <div style="float: right; margin-top: 65px">
+        <div id="piilotettava">
 
+            <div class="form-group form-group-sm">
 
-                <div class="form-group form-group-sm">
-
-                <input class="form-control" type="text" placeholder="Käyttäjätunnus" name="uname" id="id" style="margin-bottom:5px;" required>
-                <input class="form-control" type="password" placeholder="Salasana" name="psw" id="pw" style="margin-bottom:5px;" required>
-                        <button class="btn btn-xs" onclick="kirjautuuSisaanJosTunnuksetOikein()">Kirjaudu</button>
-                        <button class="btn btn-xs" onclick="luoJaLisaaUusiKayttaja()">Luo tili</button>
-                </div>
-
-                <!--<input type="button" value="Luo tili" onclick="luoJaLisaaUusiKayttaja()">-->
+                <input class="form-control" type="text" placeholder="Käyttäjätunnus" name="uname" id="id"
+                       style="margin-bottom:5px;" required>
+                <input class="form-control" type="password" placeholder="Salasana" name="psw" id="pw"
+                       style="margin-bottom:5px;" required>
+                <button class="btn btn-xs" onclick="kirjautuuSisaanJosTunnuksetOikein()">Kirjaudu</button>
+                <button class="btn btn-xs" onclick="luoJaLisaaUusiKayttaja()">Luo tili</button>
             </div>
-            <div id="kirjauduUlosPiilotettava" style="margin-bottom:5px"></div>
+
         </div>
-        <div class="row">
+        <div id="kirjauduUlosPiilotettava" style="margin-bottom:5px"></div>
+    </div>
+    <div class="row">
         <div class="keskitetty col-sm-4">
-    <h1>JUNAVERSUM!</h1>
+            <h1>JUNAVERSUM!</h1>
             <div class="form-group">
-            <select name="lahtoasema" id="lahto" class="preferenceSelect form-control" style="margin-bottom:5px;"></select>
+                <select name="lahtoasema" id="lahto" class="preferenceSelect form-control"
+                        style="margin-bottom:5px;"></select>
 
-            <select name="paateasema" id="paate" class="preferenceSelect form-control" style="margin-bottom:5px;"></select>
+                <select name="paateasema" id="paate" class="preferenceSelect form-control"
+                        style="margin-bottom:5px;"></select>
 
-
-            <input type="datetime-local" id="pvm" class="form-control">
+                <input type="datetime-local" id="pvm" class="form-control">
             </div>
-        <!--Tässä divissä kaikki käyttäjään liittyvät toiminnallisuudet-->
-
-
-
 
             <button id="nappi" class="btn btn-block">Hae</button>
             <br>
             <button id="haeAsema" class="btn btn-block">Etsi lähin asema</button>
-        <!--<input type="button" value=Etsi lähin asema" id="haeAsema">-->
             <br>
             <div id="suosikkiReitti"></div>
             <br>
             <div id="faviNappi"></div>
             <br>
-            <!--<div id="suosikkiReitti" ></div>-->
         </div>
         <div id="lista" class="col-sm-8 listansaadot"></div>
     </div>
-        <button class="btn" onclick="topFunction()" id="myBtn" title="Go to top" >Top</button>
+    <button class="btn" onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
     <div class="clock-builder-output" style="position: fixed; bottom: 50px; left: 100px"></div>
 
+    <!--Tässä kellon scriptiä ja tyyliä-->
     <script type="text/javascript" src="clock_assets/flipclock.js"></script>
-    <style text="text/css">body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn { color: white; background-color: #333333; } body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot { background: #323434; } body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a { color: #323434; }</style>
+    <style text="text/css">body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn {
+        color: white;
+        background-color: #333333;
+    }
+
+    body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot {
+        background: #323434;
+    }
+
+    body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a {
+        color: #323434;
+    }</style>
     <script type="text/javascript">
-        $(function(){
-            FlipClock.Lang.Custom = { days:'Days', hours:'Hours', minutes:'Minutes', seconds:'Seconds' };
+        $(function () {
+            FlipClock.Lang.Custom = {days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds'};
             var opts = {
                 clockFace: 'TwentyFourHourClock',
                 countdown: true,
@@ -88,6 +98,6 @@
             $('.clock-builder-output').FlipClock(opts);
         });
     </script>
-
+</div>
 </body>
 </html>
