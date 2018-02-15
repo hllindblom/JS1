@@ -4,12 +4,20 @@ var asemat;
 
 var lahtoasema;
 var paateasema;
+var paivamaara;
+
 
 function hae(){
     document.getElementById("lista").innerHTML ='';
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
-    req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema + '?limit=15', true);
+    paivamaara = document.getElementById("pvm").value;
+
+    var pvm2 = new Date(paivamaara);
+    pvm2= pvm2.toISOString();
+
+    req.open('GET', 'https://rata.digitraffic.fi/api/v1/live-trains/station/' + lahtoasema + '/' + paateasema + '?startDate=' + pvm2 + '&limit=15', true);
+
     req.send(null);
     // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
     if ((window.location.href.indexOf("#") !== -1)){
@@ -67,6 +75,20 @@ function muutaRadiaaniksi(deg) {
 }
 
 window.onload = function () {
+    //asettaa päivämäärän valinta -kenttään default-arvoksi tämän päivän
+
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    if(hours < 10) hours = "0" + hours;
+    if(minutes < 10) minutes = "0" + minutes;
+    var today = year + "-" + month + "-" + day + "T" + hours + ":" + minutes;
+    $('#pvm').attr('value', today);
 
     //printtaa kirjautuneen nimimerkin sivulle, luo kirjaudu ulos napin ja luo uuden localstoragen käyttäjälle, jos ei jo olemassa.
     if (window.location.href.indexOf("#") !== -1){
@@ -163,6 +185,7 @@ window.onload = function () {
                     window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
                 }
 
+
                 $('<p></p>', {
                     text: "Lähtöasema: " + palautaAsemanTiedot(lahtoasema).stationName
                 }).appendTo('#lista');
@@ -187,6 +210,7 @@ window.onload = function () {
                     }).appendTo('#lista');
 
 
+                    var palautettavaTeksti = "";
                     //listataan junan tarkemmat tiedot
                     for(var j = lahtoasemanIndeksi+1; j <= paateasemanIndeksi; j += 2){
 
@@ -194,11 +218,12 @@ window.onload = function () {
                             var aika = new Date(juna.timeTableRows[j].scheduledTime);
                             var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
 
-                            $('<p></p>', {
-                                text: asemanNimi + ", " + aika.toLocaleTimeString("fi", optiot) ,
-                            }).appendTo('#' + juna.trainNumber).hide();
+                            palautettavaTeksti+= "<p>"+asemanNimi + ", " + aika.toLocaleTimeString("fi", optiot);
                         }
+
                     }
+                    $('#' + juna.trainNumber).append(palautettavaTeksti);
+                    $('#' + juna.trainNumber).children().hide();
                     $("#"+juna.trainNumber).on('click', function () {
                         $(this).children().slideToggle();
                     });
