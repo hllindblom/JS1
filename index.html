@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Junia</title>
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="junahaku.js"></script>
     <script src="loginscript.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="container" id="piilotettava">
+<div class="container-fluid">
+<div id="piilotettava">
     <input type="text" placeholder="Käyttäjätunnus" name="uname" id="id" required>
     <input type="password" placeholder="Salasana" name="psw" id="pw" required>
     <br>
@@ -38,6 +44,6 @@
 <div id="lista"></div>
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-
+</div>
 </body>
 </html>
