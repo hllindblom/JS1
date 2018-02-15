@@ -5,6 +5,7 @@
         var kayttajat = localStorage.kayttajat;
         var uusiNimi = document.getElementById("id").value;
         var uusiSalasana = document.getElementById("pw").value;
+
         if(kayttajat === undefined){
             if (uusiNimi === '' && uusiSalasana === ''){
                 window.alert("Syötä käyttäjätunnus ja salasana!")
@@ -20,7 +21,12 @@
                 document.getElementById("pw").value = '';
             }
         } else {
-            if (kayttajat.indexOf(uusiNimi) === -1) {
+            //otetaan kiinni tyhjä käyttäjätunnus
+            if(kayttajat.indexOf(uusiNimi) === 0 && uusiSalasana === ''){
+                window.alert("Syötä käyttäjätunnus ja salasana!");
+            } else if (kayttajat.indexOf(uusiNimi) === 0 && uusiSalasana !== ''){
+                window.alert("Syötä myös käyttäjätunnus!");
+            } else if (kayttajat.indexOf(uusiNimi) === -1) {
                 if (uusiNimi === '' && uusiSalasana === '') {
                     window.alert("Syötä käyttäjätunnus ja salasana!")
                 } else if (uusiNimi !== '' && uusiSalasana === '') {
