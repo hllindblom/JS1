@@ -6,7 +6,7 @@
     z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
-    background-color: cornflowerblue    ; /* Set a background color */
+    background-color: #2d2d2d; /* Set a background color */
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
@@ -16,11 +16,15 @@
 }
 
 .marginaalit {
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
-.listavari {
+.listansaadot {
     color: white;
     font-weight: bold;
+}
+.listansaadot:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 25px;
 }
