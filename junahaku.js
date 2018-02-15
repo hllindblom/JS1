@@ -201,7 +201,8 @@ window.onload = function () {
 
                 // Varoitetaan, jos yhteyksiä ei löydy, ei turhaan tulosteta tyhjää lähtöasemaa.
                 if(data.code === "TRAIN_NOT_FOUND"){
-                    window.alert("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
+                    luoVaroitusViesti("Yhteydelle ei löydy suoria junia! Valitse toinen yhteys.");
+
                 }
 
                 // Luodaan taulukko, johon junat lisätään.
@@ -259,7 +260,7 @@ window.onload = function () {
                     }
                 }
             } else {
-                alert("Pyyntö epäonnistui");
+                luoVaroitusViesti("Pyyntö epäonnistui");
             }
         }
     };
@@ -343,11 +344,11 @@ function luoJaLisaaUusiKayttaja(){
 
     if(kayttajat === undefined){
         if (uusiNimi === '' && uusiSalasana === ''){
-            window.alert("Syötä käyttäjätunnus ja salasana!")
+            luoVaroitusViesti("Syötä käyttäjätunnus ja salasana!")
         } else if (uusiNimi !== '' && uusiSalasana === '') {
-            window.alert("Syötä myös salasana!")
+            luoVaroitusViesti("Syötä myös salasana!")
         } else if (uusiNimi === '' && uusiSalasana !== ''){
-            window.alert("Syötä myös käyttäjätunnus!")
+            luoVaroitusViesti("Syötä myös käyttäjätunnus!")
         } else {
             var uusiKirjautuja = "{\"id\":\"" + uusiNimi + "\",\"pw\":\"" + uusiSalasana + "\"}";
             localStorage.kayttajat += uusiKirjautuja;
@@ -358,25 +359,25 @@ function luoJaLisaaUusiKayttaja(){
     } else {
         // Otetaan kiinni tyhjä käyttäjätunnus.
         if(kayttajat.indexOf(uusiNimi) === 0 && uusiSalasana === ''){
-            window.alert("Syötä käyttäjätunnus ja salasana!");
+            luoVaroitusViesti("Syötä käyttäjätunnus ja salasana!");
         } else if (kayttajat.indexOf(uusiNimi) === 0 && uusiSalasana !== ''){
-            window.alert("Syötä myös käyttäjätunnus!");
+            luoVaroitusViesti("Syötä myös käyttäjätunnus!");
         } else if (kayttajat.indexOf(uusiNimi) === -1) {
             if (uusiNimi === '' && uusiSalasana === '') {
-                window.alert("Syötä käyttäjätunnus ja salasana!")
+                luoVaroitusViesti("Syötä käyttäjätunnus ja salasana!")
             } else if (uusiNimi !== '' && uusiSalasana === '') {
-                window.alert("Syötä myös salasana!")
+                luoVaroitusViesti("Syötä myös salasana!")
             } else if (uusiNimi === '' && uusiSalasana !== '') {
-                window.alert("Syötä myös käyttäjätunnus!")
+                luoVaroitusViesti("Syötä myös käyttäjätunnus!")
             } else {
                 var uusiKirjautuja = "{\"id\":\"" + uusiNimi + "\",\"pw\":\"" + uusiSalasana + "\"}";
                 localStorage.kayttajat += uusiKirjautuja;
-                window.alert("Uusi käyttäjätunnus on nyt luotu. Voit kirjautua järjestelmään syöttämilläsi tiedoilla!");
+                luoVaroitusViesti("Uusi käyttäjätunnus on nyt luotu. Voit kirjautua järjestelmään syöttämilläsi tiedoilla!");
                 document.getElementById("id").value = '';
                 document.getElementById("pw").value = '';
             }
         } else {
-            window.alert("Käyttäjätunnus on jo olemassa! Yritä uudestaan.")
+            luoVaroitusViesti("Käyttäjätunnus on jo olemassa! Yritä uudestaan.")
         }
     }
 }
@@ -392,9 +393,9 @@ function kirjautuuSisaanJosTunnuksetOikein() {
     console.log(kirjautuja);
 
     if (kayttajat === undefined){
-        window.alert("Järjestelmässä ei ole vielä yhtäkään käyttäjää, luo ensimmäinen!")
+        luoVaroitusViesti("Järjestelmässä ei ole vielä yhtäkään käyttäjää, luo ensimmäinen!")
     } else if (kayttajat.indexOf(kirjautuja) === -1){
-        window.alert("Väärä käyttäjätunnus tai salasana!")
+        luoVaroitusViesti("Väärä käyttäjätunnus tai salasana!")
         document.getElementById("id").value = '';
         document.getElementById("pw").value = '';
     } else {
@@ -409,4 +410,15 @@ function kirjautuuSisaanJosTunnuksetOikein() {
 function siirryKirjautuneenaAikatauluSivulle() {
     window.location.reload();
     open(url="index.html" + "#" + document.getElementById("id").value,"_self");
+}
+
+/**
+ * Luodaan varoitusviesti viestit-kenttään
+ */
+function luoVaroitusViesti(viesti) {
+   var varoitusViesti= '<div id=\"varoitusviesti\" class=\"alert alert-danger alert-dismissable\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>' +viesti+ '</div>';
+    $('#viestit').append(varoitusViesti);
+    $('#varoitusviesti').click(function(){
+        $('#varoitusviesti').alert("close");
+    });
 }

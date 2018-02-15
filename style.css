@@ -23,8 +23,13 @@
 .listansaadot {
     color: white;
     font-weight: bold;
-}
-.listansaadot:hover {
     background: rgba(0, 0, 0, 0.4);
     border-radius: 25px;
+}
+.listansaadot tr:hover {
+    color:black;
+}
+
+.alert {
+    width:80%;
 }
