@@ -60,7 +60,7 @@
     }
 // Tässä avataan alkuperäinen junien aikataulusivu, jonka urlin perään on asetettu juuri onnistuneesti sisäänkirjautuneen käyttäjän käyttäjätunnus
     function siirryKirjautuneenaAikatauluSivulle() {
-        open(url="index.html" + "#" + document.getElementById("id").value);
+        open(url="index.html" + "#" + document.getElementById("id").value,"_self");
     }
 
 

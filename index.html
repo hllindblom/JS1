@@ -5,20 +5,25 @@
     <title>Junia</title>
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="junahaku.js"></script>
-    <script>
-    </script>
+    <script src="loginscript.js"></script>
 </head>
 <body>
-<h1>Junahaku:</h1>
+<div class="container" id="piilotettava">
+    <input type="text" placeholder="Käyttäjätunnus" name="uname" id="id" required>
+    <input type="password" placeholder="Salasana" name="psw" id="pw" required>
+    <br>
+    <input type="button" value="Kirjaudu" onclick="kirjautuuSisaanJosTunnuksetOikein()">
+    <input type="button" value="Luo tili" onclick="luoJaLisaaUusiKayttaja()">
+</div>
+<div id="kirjauduUlosPiilotettava"></div>
+<div class="keskitetty">
+<h1>JUNIEN AIKATAULUHAKU - SUOMI</h1>
         <!--Tässä divissä kaikki käyttäjään liittyvät toiminnallisuudet-->
         <div id="kayttajanNimi"></div>
         <div id="lisaaSuosikkeihin"></div>
+        <div id="suosikkiReitti"></div>
 
-        Lähtöasema:<br>
         <select name="lahtoasema" id="lahto" class="preferenceSelect"></select>
-        <br>
-
-        Pääteasema:<br>
         <select name="paateasema" id="paate" class="preferenceSelect"></select>
         <br>
         <br>
@@ -28,7 +33,11 @@
 
         <input type="submit" value="Hae" id="nappi">
         <input type="button" value="Etsi lähin asema" id="haeAsema">
+</div>
 
 <div id="lista"></div>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
 </body>
 </html>

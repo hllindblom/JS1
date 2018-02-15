@@ -49,7 +49,7 @@ function lisaaSuosikki(){
     window.alert("Tallensit reitin");
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
-    document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
+    document.getElementById("suosikkiReitti").innerHTML = "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
     var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
     localStorage.setItem(kayttajanNimi,lahtoasema + " - " + paateasema);
 }
@@ -74,6 +74,22 @@ function muutaRadiaaniksi(deg) {
     return deg * Math.PI / 180;
 }
 
+// TÄSSÄ LUODAAN BACK TO TOP-NAPPI!
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
 window.onload = function () {
     //asettaa päivämäärän valinta -kenttään default-arvoksi tämän päivän
 
@@ -90,18 +106,31 @@ window.onload = function () {
     var today = year + "-" + month + "-" + day + "T" + hours + ":" + minutes;
     $('#pvm').attr('value', today);
 
+    // TÄSSÄ PIILOTETAAN SISÄÄNKIRJAUTUMISPALKKI JOS KIRJAUTUNUT JO SISÄÄN JA NÄKYVILLÄ KIRJAUDU ULOS PALKKI, JOS EI KIRJAUTUNUT VAIN TÄMÄ NÄKYVILLÄ
+    if ((window.location.href.indexOf("#") !== -1)){
+        document.getElementById("piilotettava").style.display = "none";
+    } else {
+        document.getElementById("piilotettava").style.display = "block";
+    }
+
     //printtaa kirjautuneen nimimerkin sivulle, luo kirjaudu ulos napin ja luo uuden localstoragen käyttäjälle, jos ei jo olemassa.
     if (window.location.href.indexOf("#") !== -1){
         var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
         console.log(kayttajanNimi);
-        document.getElementById("kayttajanNimi").innerHTML = "<h1>" + "Kirjautuneena: " + kayttajanNimi + "<br>";
-        document.getElementById("kayttajanNimi").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
+        document.getElementById("kirjauduUlosPiilotettava").innerHTML = "Käyttäjä: " + kayttajanNimi + " ";
+        document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
         if (localStorage.getItem(kayttajanNimi) === null){
             localStorage.setItem(kayttajanNimi, '');
         } else {
             console.log(localStorage.getItem(kayttajanNimi));
-            document.getElementById("kayttajanNimi").innerHTML += "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + localStorage.getItem(kayttajanNimi);
+            document.getElementById("suosikkiReitti").innerHTML = "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + localStorage.getItem(kayttajanNimi);
         }
+    }
+    // TÄSSÄ PIILOTETAAN KIRJAUDU ULOS PAINIKE JOS EI KIRJAUTUNUT SISÄÄN, JOS KIRJAUTUNUT NIIN VAIN TÄMÄ NÄKYVILLÄ!
+    if ((window.location.href.indexOf("#") !== -1)){
+        document.getElementById("kirjauduUlosPiilotettava").style.display = "block";
+    } else {
+        document.getElementById("kirjauduUlosPiilotettava").style.display = "none";
     }
 
     //haetaan asema-data, suodatetaan pois ne asemat, jotka eivät ole matkustaja-asemia
