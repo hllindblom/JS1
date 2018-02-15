@@ -22,13 +22,15 @@ function hae(){
     // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
     if ((window.location.href.indexOf("#") !== -1)){
         document.getElementById("faviNappi").innerHTML = "<button class=\"btn btn-block\" id=\"favnappi\" onclick=\"lisaaSuosikki()\">Lisää reitti suosikkeihin</button>";
-        $('#favnappi').hide().delay(3000).fadeIn(2200);
+        // $('#favnappi').hide().delay(1000).fadeIn(2200);
     }
 }
 
 // sijoittaa suosikin hakuehtoihin, mutta ei toteuta hakua. Pitää painaa "Hae" erikseen.
 function avaaSuosikki(){
-    var splitattava = document.getElementById("suosikki").innerText;
+    // var splitattava = document.getElementById("suosikki").innerText;
+    var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
+    var splitattava= localStorage.getItem(kayttajanNimi)
     var splitattu = splitattava.split(" ");
     console.dir(splitattu);
     var lahtoAsemaSuosikki = splitattu[0];
@@ -50,7 +52,7 @@ function lisaaSuosikki(){
     window.alert("Tallensit reitin");
     lahtoasema = document.getElementById("lahto").value;
     paateasema = document.getElementById("paate").value;
-    document.getElementById("suosikkiReitti").innerHTML = "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + lahtoasema + " - " + paateasema;
+    document.getElementById("suosikkiReitti").innerHTML = "<button class=\"btn btn-block\" id=\"suosikki\" onclick=\"avaaSuosikki()\">Hae suosikkireittiä: " + lahtoasema + " - " + paateasema+"</button>";
     var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
     localStorage.setItem(kayttajanNimi,lahtoasema + " - " + paateasema);
 }
@@ -124,7 +126,7 @@ window.onload = function () {
             localStorage.setItem(kayttajanNimi, '');
         } else {
             console.log(localStorage.getItem(kayttajanNimi));
-            document.getElementById("suosikkiReitti").innerHTML = "<h2 id=\"suosikki\" onclick=\"avaaSuosikki()\">" + localStorage.getItem(kayttajanNimi);
+            document.getElementById("suosikkiReitti").innerHTML = "<button id=\"suosikki\" class='btn btn-block' onclick=\"avaaSuosikki()\">Hae suosikkireittiä: " + localStorage.getItem(kayttajanNimi)+"</button>";
         }
     }
     // TÄSSÄ PIILOTETAAN KIRJAUDU ULOS PAINIKE JOS EI KIRJAUTUNUT SISÄÄN, JOS KIRJAUTUNUT NIIN VAIN TÄMÄ NÄKYVILLÄ!
