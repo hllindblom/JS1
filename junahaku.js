@@ -220,45 +220,51 @@ window.onload = function () {
                     }).appendTo('#lista');
                 }
 
+                //luodaan taulukko, johon junat lisätään
+                $('<table></table>', {
+                    id: 'taulukko',
+                    class: 'table table-responsive table-hover'
+                }).appendTo('#lista');
+                //lisätään headerit taulukolle
+                $('#taulukko').append('<thead><tr><th></th><th>Juna</th><th>Lähtöaika</th><th>Saapumisaika</th>');
 
+                //haetaan dokumentin kohta, johon taulukon tiedot lisätään (käytetään for-luupissa alla)
+                var taulukonTaytto = document.getElementById('taulukko');
 
                 for(var i = 0; i < data.length; i++){
-                    var juna = data[i];
+                    var juna = data[i]; //haetaan juna, jota käsitellään
                     var lahtoasemanIndeksi = palautaJunanTiedot(lahtoasema, juna.timeTableRows);
                     var paateasemanIndeksi = palautaJunanTiedot(paateasema, juna.timeTableRows);
                     var lahtoaika = new Date(juna.timeTableRows[lahtoasemanIndeksi].scheduledTime);
                     var saapumisaika = new Date(juna.timeTableRows[paateasemanIndeksi].scheduledTime);
+                    //jos lähijuna, junan nimi = lähijunan tunnus, muuten junan tyyppi + junan numero
                     var junanNimi = (juna.trainCategory==="Commuter")? (juna.commuterLineID+"-juna") : (juna.trainType+juna.trainNumber);
-                    // var lahtopaikka = palautaAsemanTiedot(juna.timeTableRows[0].stationShortCode).stationName;
-                    // var saapumispaikka = palautaAsemanTiedot(juna.timeTableRows[juna.timeTableRows.length-1].stationShortCode).stationName;
+                    var optiot = {hour: '2-digit', minute: '2-digit', hour12: false}; //ajan näyttämisen asetukset
 
-                    var optiot = {hour: '2-digit', minute: '2-digit', hour12: false};
-                    //listataan junat
-                    $('<p></p>', {
-                        text: junanNimi + ", lähtee: "
-                        + lahtoaika.toLocaleDateString("fi", optiot) + " saapuu (" + palautaAsemanTiedot(paateasema).stationName + "): "
-                        + saapumisaika.toLocaleDateString("fi", optiot),
-                        id: juna.trainNumber,
-                    }).appendTo('#lista');
+                    //lisätään taulukkoon rivi, jossa on junan tiedot
+                    taulukonTaytto.innerHTML += '<tr class="clickable" data-toggle="collapse" id=' + juna.trainNumber
+                        + ' data-target=.' + juna.trainNumber + '><td><i class="glyphicon glyphicon-plus"></i></td><td>'+junanNimi+'</td>' +
+                        '<td>'+ lahtoaika.toLocaleDateString("fi", optiot) + '</td>' +
+                        '<td>' + saapumisaika.toLocaleDateString("fi", optiot) + '</td></tr>';
 
+                    //haetaan niiden asemien tiedot, joissa juna pysähtyy
+                    //haetaan ensin lähtöpaikan tiedot ja lisätään taulukkoon
+                    var aika = new Date(juna.timeTableRows[lahtoasemanIndeksi].scheduledTime);
+                    var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[lahtoasemanIndeksi].stationShortCode).stationName;
+                    taulukonTaytto.innerHTML += '<tr class="collapse '+juna.trainNumber+'"><td></td><td>'+asemanNimi+'</td>' +
+                        '<td>'+ aika.toLocaleTimeString("fi", optiot) +'</td><td></td></tr>';
 
-                    var palautettavaTeksti = "";
-                    //listataan junan tarkemmat tiedot
+                    //haetaan sitten muiden pysähdyspaikkojen tiedot
                     for(var j = lahtoasemanIndeksi+1; j <= paateasemanIndeksi; j += 2){
-
                         if (juna.timeTableRows[j].trainStopping) {
-                            var aika = new Date(juna.timeTableRows[j].scheduledTime);
-                            var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
+                            aika = new Date(juna.timeTableRows[j].scheduledTime);
+                            asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
 
-                            palautettavaTeksti+= "<p>"+asemanNimi + ", " + aika.toLocaleTimeString("fi", optiot);
+                            //lisätään asemien tiedot taulukkoon
+                            taulukonTaytto.innerHTML += '<tr class="collapse '+juna.trainNumber+'"><td></td><td>'+asemanNimi+'</td>' +
+                                '<td>'+ aika.toLocaleTimeString("fi", optiot) +'</td><td></td></tr>';
                         }
-
                     }
-                    $('#' + juna.trainNumber).append(palautettavaTeksti);
-                    $('#' + juna.trainNumber).children().hide();
-                    $("#"+juna.trainNumber).on('click', function () {
-                        $(this).children().slideToggle();
-                    });
                 }
             } else {
                 alert("Pyyntö epäonnistui");
