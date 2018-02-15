@@ -14,10 +14,10 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-<div class="container-fluid">
+<body style="background-image: url(bakkari1.jpg); background-attachment: fixed; background-repeat: no-repeat; background-position: center">
+<div class="container-fluid marginaalit">
 
-        <div style="float: right">
+        <div style="float: right; margin-top: 70px">
             <div id="piilotettava">
 
 
@@ -35,7 +35,7 @@
         </div>
         <div class="row">
         <div class="keskitetty col-sm-4">
-    <h1>JUNIEN AIKATAULUT</h1>
+    <h1>JUNAVERSUM!</h1>
             <div class="form-group">
             <select name="lahtoasema" id="lahto" class="preferenceSelect form-control"></select>
 
@@ -53,16 +53,13 @@
             <button id="haeAsema" class="btn btn-block">Etsi lähin asema</button>
         <!--<input type="button" value=Etsi lähin asema" id="haeAsema">-->
 
-            <div id="lisaaSuosikkeihin"></div>
-            <div id="suosikkiReitti"></div>
             <div id="faviNappi"></div>
         </div>
-
-        <div id="lista" class="col-sm-8"></div>
+        <div id="lista" class="col-sm-8 listavari"></div>
     </div>
         <button class="btn" onclick="topFunction()" id="myBtn" title="Go to top" >Top</button>
 
-    <div class="clock-builder-output" style="float: right"></div>
+    <div class="clock-builder-output" style="position: fixed; bottom: 50px; left: 100px"></div>
 
     <script type="text/javascript" src="clock_assets/flipclock.js"></script>
     <style text="text/css">body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn { color: white; background-color: #333333; } body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot { background: #323434; } body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a { color: #323434; }</style>
@@ -87,5 +84,6 @@
             $('.clock-builder-output').FlipClock(opts);
         });
     </script>
+    <div id="suosikkiReitti" style="float:right"></div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 #myBtn {
     display: none; /* Hidden by default */
     position: fixed; /* Fixed/sticky position */
-    bottom: 20px; /* Place the button at the bottom of the page */
-    right: 30px; /* Place the button 30px from the right */
+    bottom: 65px; /* Place the button at the bottom of the page */
+    right: 100px; /* Place the button 30px from the right */
     z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
@@ -13,4 +13,14 @@
     border-radius: 10px; /* Rounded corners */
     font-size: 18px; /* Increase font size */
     font-family: Gill Sans , sans-serif;
+}
+
+.marginaalit {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.listavari {
+    color: white;
+    font-weight: bold;
 }

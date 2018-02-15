@@ -21,7 +21,7 @@ function hae(){
     req.send(null);
     // Onnistuneen haun jälkeen tsekataan onko käyttäjä kirjautunut. Jos on, luodaan nappi, jolla käyttäjä voi tallentaa hakutietonsa LocalStorageen tulevaisuutta ajatellen.
     if ((window.location.href.indexOf("#") !== -1)){
-        document.getElementById("faviNappi").innerHTML = "<input type=\"button\" value=\"Lisää reitti suosikkeihin\" id=\"favnappi\" onclick=\"lisaaSuosikki()\">";
+        document.getElementById("faviNappi").innerHTML = "<button class=\"btn btn-block\" id=\"favnappi\" onclick=\"lisaaSuosikki()\">Lisää reitti suosikkeihin</button>";
         $('#favnappi').hide().delay(3000).fadeIn(2200);
     }
 }
@@ -119,7 +119,7 @@ window.onload = function () {
         var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
         console.log(kayttajanNimi);
         document.getElementById("kirjauduUlosPiilotettava").innerHTML = "Käyttäjä: " + kayttajanNimi + " ";
-        document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
+        document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input class=\"btn btn-xs\" type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
         if (localStorage.getItem(kayttajanNimi) === null){
             localStorage.setItem(kayttajanNimi, '');
         } else {
