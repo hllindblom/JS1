@@ -118,8 +118,8 @@ window.onload = function () {
     if (window.location.href.indexOf("#") !== -1){
         var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
         console.log(kayttajanNimi);
-        document.getElementById("kirjauduUlosPiilotettava").innerHTML = "Käyttäjä: " + kayttajanNimi + " ";
-        document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input class=\"btn btn-xs\" type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
+        document.getElementById("kirjauduUlosPiilotettava").innerHTML = "Käyttäjä: " + kayttajanNimi + "<br>";
+        document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input style=\"margin-top: 5px\" class=\"btn btn-xs\" type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
         if (localStorage.getItem(kayttajanNimi) === null){
             localStorage.setItem(kayttajanNimi, '');
         } else {
