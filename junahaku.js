@@ -243,14 +243,21 @@ window.onload = function () {
                         '<td>' + saapumisaika.toLocaleDateString("fi", optiot) + '</td></tr>';
 
                     //haetaan niiden asemien tiedot, joissa juna pysähtyy
-                    //haetaan ensin lähtöpaikan tiedot ja lisätään taulukkoon
-                    var aika = new Date(juna.timeTableRows[lahtoasemanIndeksi].scheduledTime);
-                    var asemanNimi = palautaAsemanTiedot(juna.timeTableRows[lahtoasemanIndeksi].stationShortCode).stationName;
-                    taulukonTaytto.innerHTML += '<tr class="collapse '+juna.trainNumber+'"><td></td><td>'+asemanNimi+'</td>' +
-                        '<td>'+ aika.toLocaleTimeString("fi", optiot) +'</td><td></td></tr>';
+                    //loopin alku vaati säätöä, että se toimii silloin, kun lähtöpaikka on junan eka asema
+                    var loopinAlku;
+                    var aika;
+                    var asemanNimi;
+                    if(lahtoasemanIndeksi === 0){
+                        loopinAlku = 1;
+                        aika = new Date(juna.timeTableRows[0].scheduledTime);
+                        asemanNimi = palautaAsemanTiedot(juna.timeTableRows[0].stationShortCode).stationName;
+                        taulukonTaytto.innerHTML += '<tr class="collapse '+juna.trainNumber+'"><td></td><td>'+asemanNimi+'</td>' +
+                            '<td>'+ aika.toLocaleTimeString("fi", optiot) +'</td><td></td></tr>';
+                    } else {
+                        loopinAlku = lahtoasemanIndeksi;
+                    }
 
-                    //haetaan sitten muiden pysähdyspaikkojen tiedot
-                    for(var j = lahtoasemanIndeksi+1; j <= paateasemanIndeksi; j += 2){
+                    for(var j = loopinAlku; j <= paateasemanIndeksi; j += 2){
                         if (juna.timeTableRows[j].trainStopping) {
                             aika = new Date(juna.timeTableRows[j].scheduledTime);
                             asemanNimi = palautaAsemanTiedot(juna.timeTableRows[j].stationShortCode).stationName;
