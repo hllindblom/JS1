@@ -34,11 +34,8 @@ function avaaSuosikki(){
     var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
     var splitattava= localStorage.getItem(kayttajanNimi)
     var splitattu = splitattava.split(" ");
-    console.dir(splitattu);
     var lahtoAsemaSuosikki = splitattu[0];
     var paateAsemaSuosikki = splitattu[2];
-    console.log(lahtoAsemaSuosikki);
-    console.log(paateAsemaSuosikki);
     $('#lahto').val(lahtoAsemaSuosikki);
     $('#paate').val(paateAsemaSuosikki);
     hae();
@@ -126,16 +123,15 @@ window.onload = function () {
         document.getElementById("piilotettava").style.display = "block";
     }
 
+    $('#lista').hide();
     // Printtaa kirjautuneen nimimerkin sivulle, luo kirjaudu ulos napin ja luo uuden localstoragen käyttäjälle, jos ei jo olemassa.
     if (window.location.href.indexOf("#") !== -1){
         var kayttajanNimi = window.location.href.substring((window.location.href.indexOf("#")+1), window.location.href.length);
-        console.log(kayttajanNimi);
         document.getElementById("kirjauduUlosPiilotettava").innerHTML = "Käyttäjä: " + kayttajanNimi + "<br>";
         document.getElementById("kirjauduUlosPiilotettava").innerHTML += "<input style=\"margin-top: 5px\" class=\"btn btn-xs\" type=\"button\" value=\"Kirjaudu ulos\" onclick=\"kirjauduUlos()\">";
         if (localStorage.getItem(kayttajanNimi) === null){
             localStorage.setItem(kayttajanNimi, '');
         } else {
-            console.log(localStorage.getItem(kayttajanNimi));
             document.getElementById("suosikkiReitti").innerHTML = "<button id=\"suosikki\" class='btn btn-block' onclick=\"avaaSuosikki()\">Hae suosikkireittiä: " + localStorage.getItem(kayttajanNimi)+"</button>";
         }
     }
@@ -258,6 +254,7 @@ window.onload = function () {
                                 '<td>'+ aika.toLocaleTimeString("fi", optiot) +'</td><td></td></tr>';
                         }
                     }
+                    $('#lista').show();
                 }
             } else {
                 luoVaroitusViesti("Pyyntö epäonnistui");
@@ -389,8 +386,6 @@ function luoJaLisaaUusiKayttaja(){
 function kirjautuuSisaanJosTunnuksetOikein() {
     var kayttajat = localStorage.kayttajat;
     var kirjautuja = "{\"id\":\"" + document.getElementById("id").value + "\",\"pw\":\"" + document.getElementById("pw").value + "\"}";
-    console.log(kayttajat);
-    console.log(kirjautuja);
 
     if (kayttajat === undefined){
         luoVaroitusViesti("Järjestelmässä ei ole vielä yhtäkään käyttäjää, luo ensimmäinen!")
