@@ -16,7 +16,7 @@ Haku:
 	- haetaan vain lähtöpaikan ja määränpään väliset tarkemmat tiedot, listataan vain ne asemat, jossa juna pysähtyy
  - lähijunista haetaan junan "commuterLineID" junan tunnuksen sijaan
 
-Sisäänkirjautumin:
+Sisäänkirjautuminen:
 
  - käyttäjä voi luoda tilin ja kirjautua sillä sisään
  - kirjautumistiedot ja käyttäjän tallentamat tiedot (suosikkireitti) säilötään local storage:ssa
